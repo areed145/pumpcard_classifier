@@ -13,6 +13,7 @@ from keras.regularizers import l2
 from keras.models import Sequential
 from keras.utils import to_categorical
 from keras.optimizers import SGD
+from keras.callbacks import ModelCheckpoint
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -155,12 +156,20 @@ model.summary()
 
 # In[ ]:
 
+checkpoint = ModelCheckpoint(
+	'model.h5', 
+	verbose=1, 
+	monitor='accuracy',
+	save_best_only=True, 
+	mode='auto'
+) 
 
 model.fit(
     X_train, y_train,
 #     batch_size=100,
     epochs=50,
-    validation_data=(X_test, y_test)
+    validation_data=(X_test, y_test),
+    callbacks=[checkpoint]
 )
 
 
